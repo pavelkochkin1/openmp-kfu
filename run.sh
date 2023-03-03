@@ -37,10 +37,7 @@ do
 done
 
 if [ ! -z "$file_name" ]; then
-    clang++ \
-    -Xclang -fopenmp -lomp \
-    $file_name \
-    -o ${file_name%.*}
+    clang++ -Xclang -fopenmp -lomp $file_name -o ${file_name%.*}
 
     ./${file_name%.*}
 

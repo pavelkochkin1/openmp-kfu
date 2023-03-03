@@ -11,7 +11,7 @@ int main() {
     
     #pragma omp parallel sections
     {
-        #pragma omp section 
+        #pragma omp section
         {
             float mean = CustomFunc::mean_of_matrix(d, 6, 8);
             printf("TN[%d]: Mean = %f\n", omp_get_thread_num(), mean);

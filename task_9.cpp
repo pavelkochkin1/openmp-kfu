@@ -20,14 +20,11 @@ int* matrix_mult_vec(int** matr, int* arr, int n, int m){
 int* matrix_mult_vec_paral(int** matr, int* arr, int n, int m, int num_threads = 4){
     int* c = new int [m];
 
-    #pragma omp parallel num_threads(num_threads)
-    {   
-        #pragma omp for schedule(dynamic)
-        for (int i = 0; i < n; i++) {
-            c[i] = 0;
-            for (int j = 0; j < m; j++)
-                c[i] += matr[i][j] * arr[j];
-        }
+    #pragma omp parallel for schedule(dynamic) num_threads(num_threads)
+    for (int i = 0; i < n; i++) {
+        c[i] = 0;
+        for (int j = 0; j < m; j++)
+            c[i] += matr[i][j] * arr[j];
     }
 
     return c;
@@ -93,4 +90,4 @@ int main() {
 // Guided mean time on 10 iterations for N=10k: 0.055834
 // Auto mean time on 10 iterations for N=10k: 0.056273
 
-// Parallel wins consistent after N=60
+// Parallel wins consistent after N=80
