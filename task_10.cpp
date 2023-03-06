@@ -5,28 +5,42 @@
 using namespace std;
 
 int get_min(int** M, int n, int m, int thread=8){
-    int min = INT16_MAX;
+    int min = INT_MAX;
 
     #pragma omp parallel for num_threads(thread)
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++)
-                #pragma omp critical
-                if (min > M[i][j])
-                    min = M[i][j];
+    for(int i = 0; i < n; i++) {
+        int local_min = INT_MAX;
+        for(int j = 0; j < m; j++) {
+            if (local_min > M[i][j]) {
+                local_min = M[i][j];
+            }
+        }
+        #pragma omp critical
+        if (min > local_min) {
+            min = local_min;
+        }
+    }
 
     return min;
 }
 
 int get_max(int** M, int n, int m, int thread=8){
-    int max = INT16_MIN;
+    int max = INT_MIN;
 
     #pragma omp parallel for num_threads(thread)
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++)
-                #pragma omp critical
-                if (max < M[i][j])
-                    max = M[i][j];
-    
+    for(int i = 0; i < n; i++) {
+        int local_max = INT_MIN;
+        for(int j = 0; j < m; j++) {
+            if (local_max < M[i][j]) {
+                local_max = M[i][j];
+            }
+        }
+        #pragma omp critical
+        if (max < local_max) {
+            max = local_max;
+        }
+    }
+
     return max;
 }
 

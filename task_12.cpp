@@ -12,10 +12,13 @@ int max_of_mult(int* arr, int n, int target, int num_threads=8){
 
     #pragma parallel for num_threads(num_threads)
     for (int i = 0; i < n; i++){
-        omp_set_lock(&max_lock);
-        if (arr[i] % target == 0 & arr[i] > max)
-            max = arr[i];
-        omp_unset_lock(&max_lock);
+        if (arr[i] % target == 0 & arr[i] > max){
+            omp_set_lock(&max_lock);
+            if (arr[i] % target == 0 & arr[i] > max) {
+                max = arr[i];
+            }
+            omp_unset_lock(&max_lock);
+        }
     }
     
     return max;
